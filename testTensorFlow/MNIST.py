@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+#Load matplotlib
+import matplotlib.pyplot as plt
+plt.style.use('ggplot')
+
 #Loading the mnist data
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
@@ -31,9 +35,14 @@ learningRate = 0.5
 train_step = tf.train.GradientDescentOptimizer(learningRate).minimize(cross_entropy)
 
 #Doing 1000 training steps
+iterations = []
 for i in range(1000):
-  batch = mnist.train.next_batch(100)
-  train_step.run(feed_dict={x: batch[0], y_: batch[1]})
+  batch = mnist.train.next_batch(784)
+  _, loss_val =  sess.run([train_step,cross_entropy], feed_dict={x: batch[0], y_: batch[1]})
+  iterations.append(loss_val)
+
+plt.plot(iterations)
+plt.show()
 
 #Number of correct prediction
 correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
