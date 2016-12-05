@@ -3,8 +3,10 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{natbib}
-\usepackage[margin=0.5in]{geometry}
-
+\usepackage[margin=0.48in]{geometry}
+\geometry{tmargin=0.0in}
+\setlength{\bibsep}{1pt}
+\renewcommand{\bibfont}{\small}
 
 
 \title{Project proposal - Object Recognition and Computer vision}
@@ -22,10 +24,8 @@
 
 \begin{document}
 \maketitle
-
 \section{Chosen topic}
-We have chosen the topic : A.3 Instructions for assembling simple lego objects.
-
+We have chosen the topic : \emph{A.3 Instructions for assembling simple lego objects}.
 \medbreak
 The advent of augmented reality tools such as Microsoft Hololens have made possible many interesting 
 applications that augment the visual experience of the user providing relevant informations and 
@@ -42,19 +42,28 @@ suggest the next step by blending virtual movement on the reality perceived by t
 Hololens.
 
 \medbreak
+
+We will first implement a system that allows to recognize and locate the pieces in the frame in real time~\cite{redmon_you_2015}. 
+This system will provide simple informations to help the user assembling the pieces.
+
+If the system works well enough, we will try to add the pose estimation in the process in order to give 
+more precise informations about the pieces orientation~\cite{wohlhart_learning_2015}.
+
+\medbreak
 Some researchers already worked on the problem of LEGO brick identification and retrieval in realtime from 
 2D images\cite{botha_realtime_2009}.
  
 \section{Plan of work}
 
 \begin{itemize}
- \item GOAL: Implement an interactive assistant that helps solving/assembling a LEGO set.
+ \item GOAL: Implement an interactive assistant that helps solving/assembling a LEGO set. Providing relevant statistics to evaluate the performance of the method.
  \item We assume the knowledge of the set of sequences required for the assembly, this can be either 
  supplied by LEGO from the manual, or can be deduced from tutorial videos, as was done in the paper 
  \cite{alayrac_unsupervised_2015}.
  \item From a head mounted camera, recognize LEGO part to be moved and its destination and display a 
  hint of the movement overlaid on the hololens.
- \item Recognize similar/equivalent parts to be moved
+ \item If the previous work is good enough, we will try to add support for pose estimation and more 
+ advanced instructions.
 
 \end{itemize}
 
@@ -64,12 +73,21 @@ Some researchers already worked on the problem of LEGO brick identification and 
 \subsection{Groupe members}
 
 \begin{itemize}
- \item Othman Sbai
- \item Pierre-Alain Langlois
+ \item Othman Sbai (MVA \& École des Ponts ParisTech)
+ \item Pierre-Alain Langlois (MVA \& École des Ponts ParisTech)
 \end{itemize}
 
 
 \subsection{Plans for work sharing}
+
+%Object detection & pose estimation
+Pierre-Alain will be focused on the work regarding the object detection (including segmentation) and the 
+pose estimation task.
+%Tracking & implementation on Hololens
+Othman will be focused on the tracking constraints, and the implementation and experiments on the hololens 
+device. Both of us will also perform testing on each other implementations in order to make the produced 
+code more robust.
+
 
 \bibliographystyle{plain}
 \bibliography{biblio}
