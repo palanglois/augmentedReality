@@ -2,10 +2,14 @@
 %\documentclass[a4paper,10pt]{scrartcl}
 
 \usepackage[utf8]{inputenc}
+\usepackage{natbib}
+\usepackage[margin=0.5in]{geometry}
 
-\title{Project proposal - Computer vision - Sbai \& Langlois}
+
+
+\title{Project proposal - Object Recognition and Computer vision}
 \author{Othman Sbai, Pierre-Alain Langlois}
-\date{}
+\date\today
 
 \pdfinfo{%
   /Title    (Project proposal - Computer vision - Sbai & Langlois)
@@ -18,5 +22,57 @@
 
 \begin{document}
 \maketitle
+
+\section{Chosen topic}
+We have chosen the topic : A.3 Instructions for assembling simple lego objects.
+
+\medbreak
+The advent of augmented reality tools such as Microsoft Hololens have made possible many interesting 
+applications that augment the visual experience of the user providing relevant informations and 
+distractions. Across the web, one can find lots of tutorial videos for performing a certain task be it 
+assemble a furniture, prepare a meal, change tire in addition to DIY videos. These explanations can 
+really be enhanced through augmented reality technology by overlaying instructions in the view of Hololens 
+for example in order to adapt the tutorial to the real world’s configuration. 
+\medbreak
+
+We propose to tackle the problem of providing instructions for assembling simple LEGO set. This simple 
+game-related problem is a good start in manipulating and recognizing 3D objects from a head-mounted camera. 
+Our goal is to create a assistant that is able to recognize the state of the LEGO mounting problem and 
+suggest the next step by blending virtual movement on the reality perceived by the player thanks to 
+Hololens.
+
+\medbreak
+Some researchers already worked on the problem of LEGO brick identification and retrieval in realtime from 
+2D images\cite{botha_realtime_2009}.
+ 
+\section{Plan of work}
+
+\begin{itemize}
+ \item GOAL: Implement an interactive assistant that helps solving/assembling a LEGO set.
+ \item We assume the knowledge of the set of sequences required for the assembly, this can be either 
+ supplied by LEGO from the manual, or can be deduced from tutorial videos, as was done in the paper 
+ \cite{alayrac_unsupervised_2015}.
+ \item From a head mounted camera, recognize LEGO part to be moved and its destination and display a 
+ hint of the movement overlaid on the hololens.
+ \item Recognize similar/equivalent parts to be moved
+
+\end{itemize}
+
+
+\section{Operational organization}
+
+\subsection{Groupe members}
+
+\begin{itemize}
+ \item Othman Sbai
+ \item Pierre-Alain Langlois
+\end{itemize}
+
+
+\subsection{Plans for work sharing}
+
+\bibliographystyle{plain}
+\bibliography{biblio}
+
 
 \end{document}
