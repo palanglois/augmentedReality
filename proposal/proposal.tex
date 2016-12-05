@@ -26,22 +26,22 @@
 \maketitle
 \section{Chosen topic}
 We have chosen the topic : \emph{A.3 Instructions for assembling simple lego objects}.
-\medbreak
+\smallbreak
 The advent of augmented reality tools such as Microsoft Hololens have made possible many interesting 
 applications that augment the visual experience of the user providing relevant informations and 
 distractions. Across the web, one can find lots of tutorial videos for performing a certain task be it 
 assemble a furniture, prepare a meal, change tire in addition to DIY videos. These explanations can 
 really be enhanced through augmented reality technology by overlaying instructions in the view of Hololens 
 for example in order to adapt the tutorial to the real world’s configuration. 
-\medbreak
+\smallbreak
 
 We propose to tackle the problem of providing instructions for assembling simple LEGO set. This simple 
 game-related problem is a good start in manipulating and recognizing 3D objects from a head-mounted camera. 
-Our goal is to create a assistant that is able to recognize the state of the LEGO mounting problem and 
+Our goal is to create an assistant that is able to recognize the state of the LEGO mounting problem and 
 suggest the next step by blending virtual movement on the reality perceived by the player thanks to 
 Hololens.
 
-\medbreak
+\smallbreak
 
 We will first implement a system that allows to recognize and locate the pieces in the frame in real time~\cite{redmon_you_2015}. 
 This system will provide simple informations to help the user assembling the pieces.
@@ -49,9 +49,11 @@ This system will provide simple informations to help the user assembling the pie
 If the system works well enough, we will try to add the pose estimation in the process in order to give 
 more precise informations about the pieces orientation~\cite{wohlhart_learning_2015}.
 
-\medbreak
+\smallbreak
 Some researchers already worked on the problem of LEGO brick identification and retrieval in realtime from 
-2D images\cite{botha_realtime_2009}.
+2D images\cite{botha_realtime_2009}. In our case, we will generate data directly from the hololens (both 
+RGB and geometrical data), since we have only a few lego pieces to recognize. If needed, we will also use 
+data augmentation techniques. 
  
 \section{Plan of work}
 
@@ -70,7 +72,7 @@ Some researchers already worked on the problem of LEGO brick identification and 
 
 \section{Operational organization}
 
-\subsection{Groupe members}
+\subsection{Group members}
 
 \begin{itemize}
  \item Othman Sbai (MVA \& École des Ponts ParisTech)
