@@ -6,3 +6,4 @@ proposal/proposal.b*
 *.backup
 report/report.aux
 report/report.log
+report/report.b*
