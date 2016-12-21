@@ -26,7 +26,7 @@
 \date\today
 
 \pdfinfo{%
-  /Title    (Project proposal - Computer vision - Sbai & Langlois)
+  /Title    (Project report - Computer vision - Sbai & Langlois)
   /Author   (Othman Sbai, Pierre-Alain Langlois)
   /Creator  (Pierre-Alain Langlois, Othman Sbai)
   /Subject  (Augmented reality - tracking)
@@ -102,10 +102,10 @@ See the section: "Pixel to Application-specified coordinate system" to find the 
 
 \url{https://developer.microsoft.com/en-us/windows/holographic/locatable_camera}
 
+\subsection{Adding Holograms and placing them}
+3D models of the main parts of our LEGO set are imported as prefabs in Unity assets of the project. Then, after recognizing the relevant part to be moved in the inventory, we can instantiate it and add it in the scene in a certain 3D location.
 
-
-
-
+This 3D location can be inferred from the bounding box given by the 2D localisation of the part concerned. However this provides only a projected localisation, and we need to find the depth through spatial mapping.
 
 \bibliographystyle{plain}
 \bibliography{biblio}
