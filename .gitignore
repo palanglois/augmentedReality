@@ -5,3 +5,8 @@ proposal/proposal.log
 proposal/proposal.b*
 *.backup
 *.log
+report/report.aux
+report/report.log
+report/report.b*
+report/report.out
+.DS_Store
