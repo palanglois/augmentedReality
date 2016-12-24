@@ -2,6 +2,7 @@
 
 * Download blender : sudo apt-get install blender
 * Download python 3 : sudo apt-get install python3
+* Download numpy : sudo pip3 install numpy
 * Set the parameters at the beginning of the file render.py
 * Create the assembly files (see next section) and put it in the assembly rules folder that you have specified in render.py
 * run launch\_renderer.sh
