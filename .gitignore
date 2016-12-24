@@ -10,3 +10,4 @@ report/report.log
 report/report.b*
 report/report.out
 .DS_Store
+*.swp
