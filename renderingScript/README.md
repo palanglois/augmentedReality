@@ -8,7 +8,7 @@
  
 # The assembly files
 
-The assembly files are csv file that explain blender how to build a renderable assembly from the raw STL files. As a consequence, you must create as much assembly file as classes that you want to render. An example assembly file is given in assembly1.csv
+The assembly files are csv files that explain blender how to build a renderable assembly from the raw STL files. As a consequence, you must create as much assembly file as classes that you want to render. An example assembly file is given in assembly1.csv. You can edit these files with your favourite spreadsheet software.
 
 The structure of this file is pretty simple. The first line gives the description of the fields used for each column. Each line after the first one represents one part that is added to the assembly.
 

@@ -110,6 +110,29 @@ def renderWithoutOutput():
   os.dup(old)
   os.close(old)
 
+#Grows src bounding box to upd bounding box
+def growBox(src,upd):
+  minX = min(src[0][0],upd[0][0])
+  minY = min(src[0][1],upd[0][1])
+  minZ = min(src[0][2],upd[0][2])
+  maxX = max(src[6][0],upd[6][0])
+  maxY = max(src[6][1],upd[6][1])
+  maxZ = max(src[6][2],upd[6][2])
+  newBox = []
+  newBox.append(Vector([minX,minY,minZ]))
+  newBox.append(Vector([minX,minY,maxZ]))
+  newBox.append(Vector([minX,maxY,maxZ]))
+  newBox.append(Vector([minX,maxY,minZ]))
+  newBox.append(Vector([maxX,minY,minZ]))
+  newBox.append(Vector([maxX,minY,maxZ]))
+  newBox.append(Vector([maxX,maxY,maxZ]))
+  newBox.append(Vector([maxX,maxY,minZ]))
+  return newBox
+
+#Setting up the environment
+bpy.context.scene.render.alpha_mode = 'TRANSPARENT' 
+bpy.context.scene.render.resolution_x = 1080
+bpy.context.scene.render.resolution_y = 1080
 
 #Rendering procedure for the assemblies
 assemblies = parseAssemblies(assemblyFolder)
@@ -118,6 +141,7 @@ for key,assembly in assemblies.items(): #For each assembly
   remove_obj_lamp_and_mesh(bpy.context) #Cleaning the blender workspace
   os.makedirs(renderingFolder+key) #Making an appropriate directory
   print('Processing assembly '+key)
+  globalBoundingBox = []
   for fileInfo in assembly: #For each file in the assembly
     file = fileInfo["Name"]
     #Import the mesh in current file in blender
@@ -134,10 +158,13 @@ for key,assembly in assemblies.items(): #For each assembly
     else:
     # no slots
       obj.data.materials.append(mat)
+    if len(globalBoundingBox) == 0:
+      globalBoundingBox = [Vector(b) for b in obj.bound_box]
+    else:
+      globalBoundingBox = growBox(globalBoundingBox,[Vector(b) for b in obj.bound_box]) 
   obj = context.active_object
   #Get the coordinates of the center of mass and the radius
-  local_bbox_center = 0.125 * sum((Vector(b) for b in obj.bound_box), Vector())
-  global_bbox_center = obj.matrix_world * local_bbox_center
+  global_bbox_center = 0.125 * sum((b for b in globalBoundingBox), Vector())
   rad = computeBoxRad(obj,global_bbox_center)
   #Add a lamp (its intensity depends on rad)
   lamp_object = makeLamp(rad)
@@ -150,8 +177,8 @@ for key,assembly in assemblies.items(): #For each assembly
       objCam.location = (xCam,yCam,zCam)
       bpy.data.cameras[bpy.context.scene.camera.name].clip_end = 1E6
       #Point the camera to the object
-      direction = local_bbox_center - Vector([xCam,yCam,zCam])
-      # point the cameras '-Z' and use its 'Y' as up
+      direction = global_bbox_center - Vector([xCam,yCam,zCam])
+      # point the cameras '-Z' and use its 'X' or 'Y' as up
       dirUp = 'X' if numpy.random.randint(2) == 0 else 'Y'
       rot_quat = direction.to_track_quat('-Z', dirUp)
       # assume we're using euler rotation
