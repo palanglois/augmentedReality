@@ -9,7 +9,7 @@
 
 ##Use
 
-* Check that the first line of render.py points to the python interpreter where you have installed numpy blender and opencv. To check this, start the interpreter and try the following command for which you should have no error : 
+* Check that the first line of render.py points to the python interpreter where you have installed numpy blender and opencv. To check this, start the interpreter and try the following commands for which you should have no error : 
   * `import numpy`
   * `import bpy`
   * `import cv2`
