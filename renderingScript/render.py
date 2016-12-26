@@ -4,7 +4,13 @@ import numpy
 import csv
 from math import pi
 from bpy import context
-from mathutils import Vector, Matrix 
+from mathutils import Vector, Matrix
+
+#Add current directory to the system path 
+curDir = os.path.realpath(__file__)
+curDir = os.path.dirname( curDir )
+sys.path.append(curDir)
+from makeTrainData import *
 
 ### BEGINNING OF THE USER PARAMETERS ###
 
@@ -186,8 +192,10 @@ for key,assembly in assemblies.items(): #For each assembly
       objCam.rotation_euler = rot_quat.to_euler()
       #Place the lamp
       lamp_object.location = (xCam, yCam, zCam+10)
-      #Render the scene 
-      bpy.data.scenes['Scene'].render.filepath = renderingFolder+key+'/'+key+'_'+str(i)+'.png'
+      #Render the scene
+      imagePath = renderingFolder+key+'/'+key+'_'+str(i)+'.png'
+      bpy.data.scenes['Scene'].render.filepath = imagePath
       renderWithoutOutput()
+      cropToBoundingBox(imagePath) 
 
 

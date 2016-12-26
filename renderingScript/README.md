@@ -1,8 +1,15 @@
 # Rendering tool for STL files
 
-* Download blender : sudo apt-get install blender
+## Installation
+
+* Download blender : use rather the [blender official download site](https://builder.blender.org/download/) 
 * Download python 3 : sudo apt-get install python3
+* Compile opencv yourself in order to have the python3 wrap : [opencv download link](http://docs.opencv.org/3.1.0/d7/d9f/tutorial_linux_install.html)
+* !!!IMPORTANT!!! You must create a symbolic link for opencv in order to blender python bundle to recognize it. See point 3 of the best answer in [stack overflow relevant topic](http://blender.stackexchange.com/questions/66265/python-opencv-cv2-in-blender)
 * Download numpy : sudo pip3 install numpy
+
+##Use
+
 * Set the parameters at the beginning of the file render.py
 * Create the assembly files (see next section) and put it in the assembly rules folder that you have specified in render.py
 * run launch\_renderer.sh
