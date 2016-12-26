@@ -11,4 +11,5 @@ report/report.b*
 report/report.out
 .DS_Store
 *.swp
+*.swo
 *__pycache__*

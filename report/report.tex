@@ -107,6 +107,14 @@ See the section: "Pixel to Application-specified coordinate system" to find the 
 
 This 3D location can be inferred from the bounding box given by the 2D localisation of the part concerned. However this provides only a projected localisation, and we need to find the depth through spatial mapping.
 
+\section{Learning to recognize the assemblies and their location on an image}
+
+\subsection{Approach}
+
+In this project we suggest to tackle the task of giving instructions to the Hololens user by being able to 
+recognize the steps of construction. For each step, there are only 3 instances to recognize : the current 
+assembly state, the part that has to be added, and the global assembly.
+
 \bibliographystyle{plain}
 \bibliography{biblio}
 

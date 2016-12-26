@@ -1,3 +1,4 @@
+#!/usr/local/bin/python3
 import bpy
 import os, sys
 import numpy
@@ -5,6 +6,8 @@ import csv
 from math import pi
 from bpy import context
 from mathutils import Vector, Matrix
+import numpy as np
+import cv2
 
 #Add current directory to the system path 
 curDir = os.path.realpath(__file__)
@@ -23,19 +26,41 @@ localSTLFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/L
 renderingFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/LegoPiecesBlender/"
 
 #Set the assembly rules folder
-
 assemblyFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/assemblyRules/"
 
+#Set the folder where the backgrounds are located
+backgroundFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/Backgrounds/"
+
+#Set the folder where the assembled data are going to be stored
+assembledDataFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/train/"
+
+#Set the folder where the annotations will be stored
+annotationFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/annotations/"
+
+#Set the folder where the train files will be stored
+# Train files includes class names and images list
+trainFileFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/train_cfg/"
+
 #Number of point of views
-nPov = 100
+nPov = 200
+
+#Number of train files to generate
+nbTrain = 1000
 
 ### END OF THE USER PARAMETERS ###
 
 #Parsing the assembly files
 def parseAssemblies(path):
+  #Define variables that associate a number to an assembly
+  assToInt = dict()
+  intToAss = []
   assemblies = dict()
+  i = 0
   for file in os.listdir(path): #For each assembly file
     if file.endswith(".csv"):
+      assToInt[file[0:-4]] = i
+      intToAss.append(file[0:-4])
+      i = i + 1
       with open(path+file, 'rt') as f:
         reader = csv.reader(f,delimiter=';')
         assembly = []
@@ -48,7 +73,7 @@ def parseAssemblies(path):
           curPiece["Matrix"] = Matrix(((float(row[4]),float(row[5]),float(row[6]),float(row[7])),(float(row[8]),float(row[9]),float(row[10]),float(row[11])),(float(row[12]),float(row[13]),float(row[14]),float(row[15])),(float(row[16]),float(row[17]),float(row[18]),float(row[19]))))
           assembly.append(curPiece)
         assemblies[file[0:-4]] = assembly
-  return assemblies
+  return assemblies,assToInt,intToAss
 
 #Computing the radius
 def computeBoxRad(obj,center):
@@ -141,8 +166,12 @@ bpy.context.scene.render.resolution_x = 1080
 bpy.context.scene.render.resolution_y = 1080
 
 #Rendering procedure for the assemblies
-assemblies = parseAssemblies(assemblyFolder)
+
+#Parsing the assemblies
+assemblies,assToInt,intToAss = parseAssemblies(assemblyFolder)
 print('Found ' + str(len(assemblies)) + ' assemblies to be rendered')
+#List that stores the rendered images
+renderedImages = []
 for key,assembly in assemblies.items(): #For each assembly
   remove_obj_lamp_and_mesh(bpy.context) #Cleaning the blender workspace
   os.makedirs(renderingFolder+key) #Making an appropriate directory
@@ -197,5 +226,36 @@ for key,assembly in assemblies.items(): #For each assembly
       bpy.data.scenes['Scene'].render.filepath = imagePath
       renderWithoutOutput()
       cropToBoundingBox(imagePath) 
+      renderedImages.append([imagePath,assToInt[key]])
+print('Assemblies succesfully rendered!')
 
+#Procedure to generate the train data out of the renderings and the background
+
+print('Beginning the generation of the train data')
+#Create the file storing the list of train images
+trainList = open(trainFileFolder+'train.txt','w')
+#Create the file that stores the class names
+nameList = open(trainFileFolder+'names.txt','w')
+#print('Length of intToAss : '+str(len(intToAss)))
+for name in intToAss:
+  nameList.write(name+'\n')
+#Load the backgrounds
+backgrounds = []
+for bgName in os.listdir(backgroundFolder):
+  backgrounds.append(backgroundFolder+bgName)
+#Generate nbTrain train data
+for i in range(nbTrain):
+  #Load a random background
+  bgNumber = np.random.randint(0,len(backgrounds))
+  #Load at most 3 class
+  nbClassToAdd = np.random.randint(1,min(3,len(intToAss)+1))
+  classToAdd = []
+  for j in range(nbClassToAdd):
+    classToAddIndex = np.random.randint(0,len(renderedImages))
+    classToAdd.append(renderedImages[classToAddIndex])
+  fileName = 'train_'+str(i)
+  #Generate the corresponding train image
+  insertAndAnnotate(classToAdd,backgrounds[bgNumber],fileName,assembledDataFolder,annotationFolder)
+  #Add it in the train list
+  trainList.write(assembledDataFolder+fileName+'.jpg'+'\n')
 
