@@ -32,10 +32,10 @@ assemblyFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/a
 backgroundFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/Backgrounds/"
 
 #Set the folder where the assembled data are going to be stored
-assembledDataFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/train/"
+assembledDataFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/images/"
 
 #Set the folder where the annotations will be stored
-annotationFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/annotations/"
+annotationFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/labels/"
 
 #Set the folder where the train files will be stored
 # Train files includes class names and images list
@@ -45,7 +45,10 @@ trainFileFolder = "/home/thefroggy/Documents/MVA/ObjectRecognition/project/Data/
 nPov = 200
 
 #Number of train files to generate
-nbTrain = 1000
+nbTrain = 3000
+
+#Percentage of files used for evaluation
+p = 0.1
 
 ### END OF THE USER PARAMETERS ###
 
@@ -234,6 +237,8 @@ print('Assemblies succesfully rendered!')
 print('Beginning the generation of the train data')
 #Create the file storing the list of train images
 trainList = open(trainFileFolder+'train.txt','w')
+#Create the file storing the list of val images
+valList = open(trainFileFolder+'val.txt','w')
 #Create the file that stores the class names
 nameList = open(trainFileFolder+'names.txt','w')
 #print('Length of intToAss : '+str(len(intToAss)))
@@ -256,6 +261,9 @@ for i in range(nbTrain):
   fileName = 'train_'+str(i)
   #Generate the corresponding train image
   insertAndAnnotate(classToAdd,backgrounds[bgNumber],fileName,assembledDataFolder,annotationFolder)
-  #Add it in the train list
-  trainList.write(assembledDataFolder+fileName+'.jpg'+'\n')
+  #Add it in the train or val list
+  if np.random.binomial(1,p) == 0:
+    trainList.write(assembledDataFolder+fileName+'.jpg'+'\n')
+  else:
+    valList.write(assembledDataFolder+fileName+'.jpg'+'\n')
 
