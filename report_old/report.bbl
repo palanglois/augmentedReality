@@ -1,0 +1,30 @@
+\begin{thebibliography}{1}
+
+\bibitem{alayrac_unsupervised_2015}
+Jean-Baptiste Alayrac, Piotr Bojanowski, Nishant Agrawal, Josef Sivic, Ivan
+  Laptev, and Simon Lacoste-Julien.
+\newblock Unsupervised {Learning} from {Narrated} {Instruction} {Videos}.
+\newblock {\em arXiv:1506.09215 [cs]}, June 2015.
+\newblock arXiv: 1506.09215.
+
+\bibitem{botha_realtime_2009}
+Leendert Botha, Lynette~Van Zijl, and Mcelory Hoffmann.
+\newblock {\em Realtime {LEGO} {Brick} {Image} {Retrieval} with {Cellular}
+  {Automata}}.
+\newblock July 2009.
+
+\bibitem{redmon_you_2015}
+Joseph Redmon, Santosh Divvala, Ross Girshick, and Ali Farhadi.
+\newblock You {Only} {Look} {Once}: {Unified}, {Real}-{Time} {Object}
+  {Detection}.
+\newblock {\em arXiv:1506.02640 [cs]}, June 2015.
+\newblock arXiv: 1506.02640.
+
+\bibitem{wohlhart_learning_2015}
+Paul Wohlhart and Vincent Lepetit.
+\newblock Learning {Descriptors} for {Object} {Recognition} and 3d {Pose}
+  {Estimation}.
+\newblock {\em arXiv:1502.05908 [cs]}, February 2015.
+\newblock arXiv: 1502.05908.
+
+\end{thebibliography}
