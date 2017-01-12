@@ -8,7 +8,7 @@
 \usepackage{amssymb}
 
 % Include other packages here, before hyperref.
-
+\graphicspath{{Figures/}}
 % If you comment hyperref and then uncomment it, you should delete
 % egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
 % run, let it finish, and you should be clear).
@@ -41,10 +41,17 @@ Pierre-Alain Langlois\\
 
 \maketitle
 %\thispagestyle{empty}
+\pdfinfo{%
+  /Title    (Project report - Computer vision - Sbai & Langlois)
+  /Author   (Othman Sbai, Pierre-Alain Langlois)
+  /Creator  (Pierre-Alain Langlois, Othman Sbai)
+  /Subject  (Augmented reality - tracking)
+  /Keywords (augmented reality neural network ponts)
+}
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-   
+   For our project for Object recognition and computer vision course, we tackled the problem of assembling Lego set using computer vision techniques. The aim is to make use of new holographic tools in order to suggest the right instructions to the user who is performing assembly task. We will first present our approach of the problem, show how we used computer vision algorithms to track the evolution of the assembly phase and suggesting the right instructions. For that task we will present the new and fast object detection framework called YOLO (You Only Live Once), which we used as a base image recognition tool by adapting it the LEGO pieces. We will present our training results accompanied by what difficulties we faced when using this young framework, and finally we will expose the work we did on the interface part of the project which means, building a hololens app that annotates the holographic world of the user by adding 3D LEGO objets on the detected pieces to move suggesting, this way, the next step to perform.
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
@@ -52,9 +59,60 @@ Pierre-Alain Langlois\\
 
 The advent of augmented reality devices such as Microsoft Hololens, Sony SmartEyeglass or Google Glass and others have made possible many interesting applications that augment the visual experience of the user with 3D holograms that are blended on his reality. Applications range from interior decoration and design, gaming but also increasing productivity in businesses by enhancing the real world and giving birth to broader imagination.
 
-Among the applications of this new promising technology still in development, one can be interested providing instructions for people to help them accomplish tasks either with human supervision or by annotating reality. In fact, as presented in \cite{alayrac_unsupervised_2015}, we can extract from the tutorial videos available online instructions for performing many tasks such as changing car tires, assembling furniture and also performing Cardiopulmonary rescucitation. These instructions can be efficiently provided to user with a 3D augmented reality device in the form of holograms and world annotations that are much comprehensible than paper instructions. An example of this world annotation is illustrated in the following figure~\ref{AnnotatingTheWorld}.
+Among the applications of this new promising technology still in development, one can be interested providing instructions for people to help them accomplish tasks either with human supervision or by annotating reality. In fact, as presented in \cite{alayrac_unsupervised_2015}, we can extract from the tutorial videos available online instructions for performing many tasks such as changing car tires, assembling furniture and also performing Cardiopulmonary rescucitation. These instructions can be efficiently provided to user with a 3D augmented reality device in the form of holograms and world annotations that are much comprehensible than paper instructions.
+
+-- This is a similar task to any general assembly task  
+\section{Learning to recognize the assemblies and their location on an image}
+
+\subsection{Approach}
+
+In this project we suggest to tackle the task of giving instructions to the Hololens user by being able to 
+recognize the steps of construction. For each step, there are only 3 instances to recognize : the current 
+assembly state, the part that has to be added, and the global assembly. As a consequence, we want to build a 
+system which is able at each state to recognize the 3 current instances and to locate them in the image.
+\medbreak
+In order to do so, we use the method described in~\cite{redmon_you_2015} which allows to perform 
+local classification efficiently thanks to convolution neural network. This approach requires to first 
+generate relevant data in order to perform the training and then to perform the training itself.
+
+\subsection{Generating the data}
+
+Since we are not able to directly generate a dataset of annotated pictures for the lego set, we generate it 
+artificially. We first model the lego parts. In order to do so, we did use the software SolidWorks. Then, 
+we build a script that generates the annotated pictures with Blender~\cite{blender} and 
+OpenCV~\cite{opencv_library}. In this section, we detail this script.
+
+\subsubsection{Build}
+
+On the machine, we need to build Python 3 from source with './configure --enable-shared'. Then we need 
+to compile Blender as a module for this Python distribution as well as OpenCV. Then, we have all the tools 
+needed to perform the generation.
+
+\subsubsection{Input}
+
+The important point here is that the classes of our classification task are the assemblies, not the parts 
+themselves. As a consequence, we have created a standard csv file that enables to defines an assembly by 
+specifying each file that constitutes the assembly, the diffuse color for each part, and the world matrix 
+that enables to place each part in space. Here is an example (some columns were skipped in order to fit 
+the page) : 
+\medbreak
+%\footnotesize{\csvautotabular[separator=semicolon]{assembly1.csv}} 
+\medbreak
+\normalsize
+Note that it is easy to place an assembly in blender gui and to obtain the World Matrix for each object 
+thanks to the python command 'bpy.context.active\_object.matrix\_world'.
+As a consequence, we need as 
+
+
+{\small
+\bibliographystyle{ieee}
+\bibliography{biblio}
+}
+
+\end{document}
 
 %-------------------------------------------------------------------------
+\clearpage
 \subsection{Language}
 
 All manuscripts must be in English.
@@ -424,9 +482,4 @@ your finished paper. We MUST have this form before your paper can be
 published in the proceedings.
 
 
-{\small
-\bibliographystyle{ieee}
-\bibliography{biblio}
-}
 
-\end{document}
