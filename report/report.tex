@@ -98,15 +98,21 @@ needed to perform the generation.
 The important point here is that the classes of our classification task are the assemblies, not the parts 
 themselves. As a consequence, we have created a standard csv file that enables to defines an assembly by 
 specifying each file that constitutes the assembly, the diffuse color for each part, and the world matrix 
-that enables to place each part in space. Here is an example (some columns were skipped in order to fit 
-the page) : 
-\medbreak
-%\footnotesize{\csvautotabular[separator=semicolon]{assembly1.csv}} 
-\medbreak
-\normalsize
+that enables to place each part in space. 
 Note that it is easy to place an assembly in blender gui and to obtain the World Matrix for each object 
 thanks to the python command 'bpy.context.active\_object.matrix\_world'.
-As a consequence, we need as 
+This framework allows to easily generate classes for other system than the lego games.
+
+\subsubsection{Algorithm}
+
+The algorithm is designed in two parts : 
+\begin{itemize}
+ \item Rendering the parts
+ \item Making insertions
+\end{itemize}
+The number of rendering for each part is taken as a parameter. We define the center of the object as the 
+center of its bounding box. For each rendering, we take a random point on the sphere around the object. 
+
 
 \subsection{About Yolo framework}
 \label{subsec:YOLO_subsection}
