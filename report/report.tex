@@ -36,7 +36,7 @@
 % To save space, use either the email address or home page, not both
 \and
 Pierre-Alain Langlois\\
-{\tt\small langlois.pierre-alain@eleves.enpc.fr}
+{\tt\small pierre-alain.langlois@eleves.enpc.fr}
 }
 
 \maketitle
@@ -79,7 +79,7 @@ We organized the work on this project in two consecutice sections, first detecti
 
 In order to suggest the right instruction our algorithm should be able to detect the state or advancement of building the set and detect the assemblies. The problem can get complex if we think about the multitude of possibilities the user can do to fool the algorithm, but we focus on the use case where the user starts building one assembly gradually and not multiple assemblies. For each step, there are only 3 instances to recognize: the current assembly state, the part that has to be added, and the global assembly when the instruction has been fulfilled. As a consequence, we want to build a system which is able at each state to recognize the 3 current instances and to locate them in the image.
 \medbreak
-In order to do so, we use the method described in (YOLO) ~\cite{redmon_you_2015}, which we will presented in subsection~\ref{subsec:YOLO_subsection} which allows to perform local classification efficiently thanks to a convolution neural network. This approach requires to first generate relevant data in order to perform the training.
+In order to do so, we use the method described in (YOLO)~\cite{redmon_you_2015}, which we will presented in subsection~\ref{subsec:YOLO_subsection} which allows to perform local classification efficiently thanks to a convolution neural network. This approach requires to first generate relevant data in order to perform the training.
 
 \subsection{Generating the data}
 
@@ -110,12 +110,64 @@ The algorithm is designed in two parts :
  \item Rendering the parts
  \item Making insertions
 \end{itemize}
+The full process is detailed on Figure~\ref{render}.
+Each assembly is being set up thanks to the world matrix and the corresponding materials are setup thanks 
+to the defined color.
 The number of rendering for each part is taken as a parameter. We define the center of the object as the 
-center of its bounding box. For each rendering, we take a random point on the sphere around the object. 
+center of its bounding box. For each rendering, we take a random point on the sphere around the object. We 
+set a camera that points towards the object center and we include a random lightning that is located in a 
+region which is close to the camera. Then, we are able to make the rendering. \\
+The second is step is to randomly insert the rendering on random backgrounds. Note that we add a random 
+number of renderings on a single background. We obtained the backgrounds 
+from the Imagenet~\cite{imagenet_cvpr09} dataset. We set the size of the rendering to be between $10\%$ and 
+$90\%$ of the background size with a threshold in order to avoid oversizing. \\
+In YOLO, we must set one text file per image in order to define the bounding boxes and the class of each 
+object located in the window. We checked the validity of our implementation by drawing the bounding boxes with 
+the same function on the data that were used in~\cite{redmon_you_2015} and our data.
+
+
+\begin{figure}
+ \centering
+ \includegraphics[scale=0.12]{DataGener}
+ \caption{Rendering process}
+ \label{render}
+\end{figure}
+
 
 
 \subsection{About Yolo framework}
 \label{subsec:YOLO_subsection}
+The Yolo framework was entirely built by the author of~\cite{redmon_you_2015}. It is made in C language with 
+a CUDA support in order to be able to perform efficient training. The framework is still under development 
+and needs a few modifications in order to be able to perform detection on arbitrary data. The YOLO neural 
+divides the picture on a regular grid and it generates two types of data out of an image. It first generates 
+one class detection per cell on the picutre ; and each cell is also responsible for generating a given number 
+of bounding boxes that are centered inside of the cell itself, with a confidence indice for each box. From 
+the two information and thanks to an additional threshold on the confidence value, we are able to deduce the 
+bounding boxes. \\
+The cost function for the training (see~\cite{redmon_you_2015}) allows to give a customized weight on each 
+aspect of the prediction : the center of the bounding box, its size, and the class that is being predicted. 
+When we train the network on customized data, we only have to train the 4 final layers, because the first 
+layers are trained on imagenet. This makes the data customization easier because we need less time to 
+compute the customized network.
+
+\subsection{Results}
+
+We tried the training on 2 classes. We chose 700 rendering per class and 10000 training data (renderings 
+added to the backgrounds) for the training part. 0.1\% of the data is dedicated to the evaluation. In 
+order to monitor precisely the learning process, we modified the code in order to output the learning curves 
+as represented on Figure~\ref{learningCurve}. The training took about 2 hours on an AWS EC2 web server. 
+Unfortunately, we could not achieve the last integration part in which we use the trained network on the 
+Hololens. However, we could plan the integration process and we could experiment on this last integration 
+brick.
+
+
+\begin{figure}
+ \centering
+ \includegraphics[scale=0.28]{LearningCurve}
+ \caption{Typical learning curve when training the model}
+ \label{learningCurve}
+\end{figure}
 
 
 \section{Porting to Hololens}
